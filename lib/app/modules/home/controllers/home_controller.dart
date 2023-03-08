@@ -8,7 +8,6 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     getListArticle();
   }
@@ -17,7 +16,7 @@ class HomeController extends GetxController {
     isLoading.toggle();
     try{
       final response = await ListArticleService().getListArticleService();
-      listArticle.addAll(response);
+      listArticle.addAll(response.reversed);
       isLoading.toggle();
     } catch(e){
       isLoading.toggle();

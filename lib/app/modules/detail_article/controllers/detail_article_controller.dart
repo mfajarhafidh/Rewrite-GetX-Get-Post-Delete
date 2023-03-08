@@ -1,20 +1,28 @@
 import 'package:get/get.dart';
+import 'package:rewrite_3/app/modules/detail_article/models/detail_article_model.dart';
+import 'package:rewrite_3/app/modules/detail_article/services/detail_article_service.dart';
 
 class DetailArticleController extends GetxController {
-  //TODO: Implement DetailArticleController
+  RxBool isLoading = false.obs;
+  Rx<DetailArticleModel> detailArticle = DetailArticleModel().obs;
+  String id = '';
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    id = Get.arguments['id'];
+    getDetailArticleController();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> getDetailArticleController() async{
+    isLoading.toggle();
+    try{
+      final response = await DetailArticleService().getDetailArticle(id: id);
+      detailArticle(response);
+      isLoading.toggle();
+    } catch(e){
+      isLoading.toggle();
+      Get.snackbar("Error", e.toString());
+    }
   }
-
-  @override
-  void onClose() {}
-  void increment() => count.value++;
 }
