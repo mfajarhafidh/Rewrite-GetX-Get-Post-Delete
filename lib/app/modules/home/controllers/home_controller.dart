@@ -1,20 +1,42 @@
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:rewrite_3/app/modules/home/models/list_article_model.dart';
+import 'package:rewrite_3/app/modules/home/services/list_article_service.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  RxBool isLoading = false.obs;
+  RxList<ListArticleModel> listArticle = <ListArticleModel>[].obs;
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    getListArticle();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> getListArticle() async{
+    isLoading.toggle();
+    try{
+      final response = await ListArticleService().getListArticleService();
+      listArticle.addAll(response.reversed);
+      isLoading.toggle();
+    } catch(e){
+      isLoading.toggle();
+      Get.snackbar("Error", e.toString());
+    }
   }
 
-  @override
-  void onClose() {}
-  void increment() => count.value++;
+  Future deleteArticle(val) async{
+    isLoading.toggle();
+    try{
+      final response = await ListArticleService().deleteArticleService(id: val);
+      Logger().d(response);
+      final res = await ListArticleService().getListArticleService();
+      listArticle.addAll(res);
+      isLoading.toggle();
+      Get.snackbar("Deleted", "You have deleted article!");
+    } catch(e){
+      isLoading.toggle();
+      Get.snackbar("Error", e.toString());
+    }
+  }
 }
