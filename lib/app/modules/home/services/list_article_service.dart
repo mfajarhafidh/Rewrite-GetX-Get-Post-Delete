@@ -14,4 +14,14 @@ class ListArticleService{
       throw Get.snackbar("Error", response.statusCode.toString());
     }
   }
+
+  Future deleteArticleService({required String id}) async{
+    final response = await _connect.delete('posts/$id');
+    Logger().d(response.statusCode);
+    if(!response.hasError){
+      return response.body!;
+    } else{
+      throw Get.snackbar("Error", response.statusCode.toString());
+    }
+  }
 }

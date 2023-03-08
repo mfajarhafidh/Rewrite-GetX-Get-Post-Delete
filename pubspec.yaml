@@ -11,6 +11,7 @@ dependencies:
   logger: 1.2.2
   easy_splash_screen: 1.0.4
   skeletons: 0.0.3
+  gap: 2.0.1
   flutter: 
     sdk: flutter
 
@@ -21,7 +22,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter: 
-  uses-material-design: true
-  assets:
+  assets: 
     - assets/
+  uses-material-design: true
 

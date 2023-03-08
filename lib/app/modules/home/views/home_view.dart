@@ -26,47 +26,54 @@ class HomeView extends GetView<HomeController> {
         ),
         body: Obx(() => controller.isLoading.value
             ? SkeletonListView()
-            : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: ListView.builder(
-                  itemCount: controller.listArticle.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      margin: EdgeInsets.only(top: 25),
-                      color: bgColor,
-                      shadowColor: Colors.black,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 19, top: 26, bottom: 16, right: 8),
-                        child: ListTile(
-                          onTap: () =>
-                              Get.toNamed(Routes.DETAIL_ARTICLE, arguments: {
-                            'id': controller.listArticle[index].id.toString()
-                          }),
-                          title: Padding(
-                            padding: const EdgeInsets.only(bottom: 14),
-                            child: Text(
-                              controller.listArticle[index].title.toString(),
-                              style: headline2,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
-                          ),
-                          subtitle: Text(
-                            controller.listArticle[index].body.toString(),
-                            style: headline3,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                            textAlign: TextAlign.justify,
-                          ),
+            : ListView.builder(
+              itemCount: controller.listArticle.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  margin: EdgeInsets.only(top: 25, left: 24, right: 24),
+                  color: bgColor,
+                  shadowColor: Colors.black,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 19, top: 26, bottom: 16, right: 8),
+                    child: ListTile(
+                      trailing: IconButton(
+                        onPressed: () => controller.deleteArticle(controller.listArticle[index].id.toString()),
+                        icon: Icon(Icons.close, color: Colors.black,),
+                      ),
+                      onTap: () =>
+                          Get.toNamed(Routes.DETAIL_ARTICLE, arguments: {
+                        'id': controller.listArticle[index].id.toString()
+                      }),
+                      title: Padding(
+                        padding: const EdgeInsets.only(bottom: 14),
+                        child: Text(
+                          controller.listArticle[index].title.toString(),
+                          style: headline2,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       ),
-                    );
-                  },
-                ),
-              )));
+                      subtitle: Text(
+                        controller.listArticle[index].body.toString(),
+                        style: headline3,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            )),
+              floatingActionButton: FloatingActionButton(
+                backgroundColor: bgColor,
+                onPressed: () => Get.toNamed(Routes.POST_ARTICLE),
+                child: Icon(Icons.add, color: Colors.black,),
+              ),
+              );
   }
 }

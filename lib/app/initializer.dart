@@ -5,14 +5,6 @@ import 'package:logger/logger.dart';
 
 class Initializer{
   static Future init() async{
-    // try{
-    //   WidgetsFlutterBinding.ensureInitialized();
-    //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: 
-    //   [SystemUiOverlay.bottom, SystemUiOverlay.top]);
-    //   _initGetConnect;
-    // } catch(e){
-    //   rethrow;
-    // }
     _initGetConnect();
   }
 
