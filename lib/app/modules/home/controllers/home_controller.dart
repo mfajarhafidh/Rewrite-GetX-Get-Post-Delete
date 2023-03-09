@@ -5,7 +5,7 @@ import 'package:rewrite_3/app/modules/home/services/list_article_service.dart';
 
 class HomeController extends GetxController {
   RxBool isLoading = false.obs;
-  RxList<ListArticleModel> listArticle = <ListArticleModel>[].obs;
+  RxList<ListArticleModel> listArticleHome = <ListArticleModel>[].obs;
 
   @override
   void onInit() {
@@ -13,11 +13,17 @@ class HomeController extends GetxController {
     getListArticle();
   }
 
+  Future<void> refreshListArticle() async{
+    listArticleHome.clear();
+    await getListArticle();
+  }
+
   Future<void> getListArticle() async{
     isLoading.toggle();
     try{
       final response = await ListArticleService().getListArticleService();
-      listArticle.addAll(response.reversed);
+      listArticleHome.clear();
+      listArticleHome.addAll(response.reversed);
       isLoading.toggle();
     } catch(e){
       isLoading.toggle();
@@ -25,13 +31,12 @@ class HomeController extends GetxController {
     }
   }
 
-  Future deleteArticle(val) async{
+  Future deleteArticle({required String userId}) async{
     isLoading.toggle();
     try{
-      final response = await ListArticleService().deleteArticleService(id: val);
+      final response = await ListArticleService().deleteArticleService(id: userId);
       Logger().d(response);
-      final res = await ListArticleService().getListArticleService();
-      listArticle.addAll(res);
+      await refreshListArticle();
       isLoading.toggle();
       Get.snackbar("Deleted", "You have deleted article!");
     } catch(e){
